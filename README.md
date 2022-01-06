@@ -180,4 +180,6 @@ The following files are provided under `org/springframework/boot/logging/logback
 
 ### Configure Log4j 2 for Logging
 
+Log4j 2 SLF4J Binding: log4j-slf4j-impl should be used with SLF4J 1.7.x releases or older.
+
 Refer to: https://docs.spring.io/spring-boot/docs/2.1.8.RELEASE/reference/html/howto-logging.html#howto-configure-log4j-for-logging
