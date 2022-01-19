@@ -25,3 +25,18 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
+task dist(type: Tar) {
+	from(jar.outputs)
+	from(configurations.runtimeClasspath)
+
+	archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+}
+
+jar {
+	manifest {
+		attributes('Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' '))
+		attributes 'Implementation-Version': archiveVersion
+	}
+	archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+}

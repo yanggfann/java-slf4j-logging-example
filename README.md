@@ -183,3 +183,47 @@ The following files are provided under `org/springframework/boot/logging/logback
 Log4j 2 SLF4J Binding: log4j-slf4j-impl should be used with SLF4J 1.7.x releases or older.
 
 Refer to: https://docs.spring.io/spring-boot/docs/2.1.8.RELEASE/reference/html/howto-logging.html#howto-configure-log4j-for-logging
+
+## CVE-2021-44228
+
+### Impact of CVE-2021-44228
+
+According to the [CVE-2021-44228](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q) We can know the following information:
+
+#### Summary
+
+Log4j versions prior to 2.16.0 are subject to a **remote code execution(RCE)** vulnerability via the **LDAP(Lightweight Directory Access Protocol)** **JNDI(Java Naming and Directory Interface)** parser.
+
+- RCE vulnerability allows an attacker to remotely inject operating system commands or code directly into the backend server to take control of the backend system.
+
+#### Impact
+
+Logging untrusted or user controlled data with a vulnerable version of Log4J may result in Remote Code Execution (RCE) against your application. This includes untrusted data included in logged errors such as exception traces, authentication failures, and other unexpected vectors of user controlled input.
+
+#### Affected versions
+
+Any Log4J version prior to v2.15.0 is affected to this specific issue.
+
+#### Affected packages
+
+Only the `org.apache.logging.log4j:log4j-core` package is directly affected by this vulnerability. The `org.apache.logging.log4j:log4j-api` package is included on this advisory to **prevent version desync** which may occur as a result of dependabot actions.
+
+#### Reminder
+
+You still need to concern the vulnerability of log4j even the current project don't use logback to print the log, because maybe the dependence which you dependent on print the log with log4j.
+
+### How to look the dependence of jar in gradle project?
+
+Gradle -> Tasks -> help -> dependencies
+
+### How to look the version of jar by command line?
+
+```
+./gradlew clean dist
+
+cd build/distributions
+
+tar -zxvf java-slf4j-logging-example.tar
+
+ls | grep log4j
+```
