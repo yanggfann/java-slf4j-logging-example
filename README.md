@@ -1,5 +1,26 @@
 # java-slf4j-logging-example
 
+## Log Level
+
+Just a clarification about the set of all possible levels, that are:
+
+```
+ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
+```
+
+If the log level of system is `INFO`, then logs of the `WARN`, `ERROR`, `FATAL`, and `OFF` levels can be output normally.
+
+|Level|Description|
+|-|-|
+|OFF|The OFF has the highest possible rank and is intended to turn off logging.|
+|FATAL|The FATAL level designates very severe error events that will presumably lead the application to abort.|
+|ERROR|The ERROR level designates error events that might still allow the application to continue running.|
+|WARN|The WARN level designates potentially harmful situations.|
+|INFO|The INFO level designates informational messages that highlight the progress of the application at coarse-grained level.|
+|DEBUG|The DEBUG Level designates fine-grained informational events that are most useful to debug an application.|
+|TRACE|The TRACE Level designates finer-grained informational events than the DEBUG|
+|ALL|The ALL has the lowest possible rank and is intended to turn on all logging.|
+
 ## SLF4J
 
 [The Simple Logging Facade for Java (SLF4J)](https://www.slf4j.org/index.html) serves as a simple facade or abstraction for various logging frameworks (e.g. java.util.logging, logback, log4j) allowing the end user to plug in the desired logging framework at deployment time.
@@ -68,15 +89,20 @@ public class Wombat {
     final Logger logger = LoggerFactory.getLogger(Wombat.class);
     
     public void printLog() {
-        logger.debug("Temperature set to {}. Old temperature was {}.", t, oldT);
+        logger.debug("Temperature set to {}. Old temperature was {}.", t, oldT);✅
     }
 }
 ```
 
-For some Logger logger, writing:
+For some Logger logger, writing("hahahaha" will be printed even the level of logging is `info` not `debug`):
 
 ```
-logger.debug("Entry number: " + i + " is " + String.valueOf(entry[i]));
+logger.debug("Entry number: " + i + " is " + test(i));❌
+
+private Integer test(Integer i) {
+  System.out.println("hahahaha");
+  return i;
+}
 ```
 
 Incurs the cost of constructing the message parameter, that is converting both integer i and entry[i] to a String, and concatenating intermediate strings. This, regardless of whether the message will be logged or not.
@@ -99,10 +125,10 @@ The logback-access module integrates with Servlet containers, such as Tomcat and
 
 According to the `ContextInitializer` in `logback-classic`, the order of looking for logback files is
 
-- logback.configurationFile
-- logback-test.xml
-- logback.groovy
-- logback.xml
+- **logback.configurationFile**
+- **logback-test.xml**
+- **logback.groovy**
+- **logback.xml**
 
 ### Reasons to prefer logback over log4j 1.x
 
